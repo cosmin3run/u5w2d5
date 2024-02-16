@@ -1,9 +1,6 @@
 package cosminpetrea.u5w2d5.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +20,8 @@ public class Employee {
     @Setter(AccessLevel.NONE)
     @GeneratedValue
     private UUID id;
+    @Column(name = "profile_img")
+    private String profileImg;
     private String username;
     private String name;
     private String surname;
