@@ -28,9 +28,12 @@ public class EmployeeService {
     @Autowired
     private EmployeeDAO employeeDAO;
 
-    public Employee save(NewEmployeeDTO payload) throws IOException{
+    public Employee saveEmployee(NewEmployeeDTO payload) throws IOException{
         employeeDAO.findByEmail(payload.email()).ifPresent(employee -> {
             throw new BadRequestException("Email '" + payload.email() + "' is already in use");
+        });
+        employeeDAO.findByUsername(payload.username()).ifPresent(employee -> {
+            throw new BadRequestException("'" + payload.username() + "' already in use, try another username" );
         });
         Employee newEmployee = new Employee();
         newEmployee.setUsername(payload.username());
@@ -59,7 +62,7 @@ public class EmployeeService {
         return employeeDAO.save(found);
     }
 
-    public void FindByIDAndDelete(UUID id){
+    public void findByIDAndDelete(UUID id){
         Employee found = this.findById(id);
         employeeDAO.delete(found);
     }
