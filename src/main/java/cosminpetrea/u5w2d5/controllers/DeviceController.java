@@ -53,7 +53,7 @@ public class DeviceController {
         deviceService.findByIdAndDelete(id);
     }
 
-    @PatchMapping("/{id}/assignDevice")
+    @PatchMapping("/{deviceId}/assignDevice")
     @ResponseStatus(HttpStatus.OK)
     public Device assignDevice(@PathVariable UUID deviceId, @RequestBody AssignDeviceToEmloyeeDTO employeeId,  BindingResult validation) {
        if (validation.hasErrors()){
