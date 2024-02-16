@@ -30,7 +30,7 @@ public class EmployeeController {
         return employeeService.getEmployees(page,size,sortBy);
     }
 
-    //POST
+    //SAVE EMPLOYEE
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -41,20 +41,25 @@ public class EmployeeController {
         return this.employeeService.saveEmployee(payload);
     }
 
+    //FIND EMPLOYEE BY ID
     @GetMapping("/{id}")
     public Employee findById(@PathVariable UUID id) {return this.employeeService.findById(id);}
 
 
+    //UPDATE EMPLOYEE
     @PutMapping("/{id}")
     public Employee FindByIdAndUpdate(@PathVariable UUID id, @RequestBody NewEmployeeDTO updatedEmployee){
         return this.employeeService.findByIdAndUpdate(id, updatedEmployee);
     }
+
+    //DELETE EMPLOYEE
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findByIdAndDelete(@PathVariable UUID id) {this.employeeService.findByIDAndDelete(id);}
 
 
+    //UPLOAD PROFILE PICTURE
     @PatchMapping("/{id}/profile_picture")
     public Employee uploadProfilePic(@RequestParam("profile_picture") MultipartFile file, @PathVariable UUID id){
         try{

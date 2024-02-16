@@ -22,6 +22,8 @@ public class DeviceController {
     @Autowired
     DeviceService deviceService;
 
+
+    //GET ALL DEVICES
     @GetMapping
     public Page<Device> getAllDevices(@RequestParam(defaultValue = "0") int page,
                                       @RequestParam(defaultValue = "10") int size,
@@ -29,9 +31,11 @@ public class DeviceController {
         return this.deviceService.getDevices(page, size, orderBy);
     }
 
+    // FIND BY ID
     @GetMapping("/{id}")
     public Device findById(@PathVariable UUID id){return this.deviceService.findById(id);}
 
+    //SAVE DEVICE
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Device saveDevice(@RequestBody @Validated NewDeviceDTO payload, BindingResult validation){
@@ -42,17 +46,23 @@ public class DeviceController {
         return deviceService.saveDevice(payload);
     }
 
+    //UPDATE DEVICE
+
     @PutMapping("/{id}")
     public Device findByIdAndUpdate(@PathVariable UUID id, @RequestBody NewDeviceDTO updatedDevice){
         return this.deviceService.findByIdAndUpdate(id, updatedDevice );
     }
 
+
+    //DELETE DEVICE
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findByIdAndDelete(@PathVariable UUID id){
         deviceService.findByIdAndDelete(id);
     }
 
+
+    //ASSIGN EMPLOYEE TO DEVICE
     @PatchMapping("/{deviceId}/assignDevice")
     @ResponseStatus(HttpStatus.OK)
     public Device assignDevice(@PathVariable UUID deviceId, @RequestBody AssignDeviceToEmloyeeDTO employeeId,  BindingResult validation) {

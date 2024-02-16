@@ -28,6 +28,8 @@ public class EmployeeService {
     @Autowired
     private EmployeeDAO employeeDAO;
 
+
+    //SAVE EMPLOYEE IN DB
     public Employee saveEmployee(NewEmployeeDTO payload) throws IOException{
         employeeDAO.findByEmail(payload.email()).ifPresent(employee -> {
             throw new BadRequestException("Email '" + payload.email() + "' is already in use");
@@ -43,15 +45,18 @@ public class EmployeeService {
         return employeeDAO.save(newEmployee);
     }
 
+    //GET ALL EMPLOYEES
     public Page<Employee> getEmployees(int page, int size, String sort){
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return employeeDAO.findAll(pageable);
     }
 
+    //FIND EMPLOYEE BY ID
     public Employee findById(UUID id) {
         return employeeDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
+    //UPDATE EMPLOYEE IN DB
     public Employee findByIdAndUpdate(UUID id, NewEmployeeDTO payload){
         Employee found = this.findById(id);
 
@@ -62,11 +67,13 @@ public class EmployeeService {
         return employeeDAO.save(found);
     }
 
+    //DELETE EMPLOYEE FROM DB
     public void findByIDAndDelete(UUID id){
         Employee found = this.findById(id);
         employeeDAO.delete(found);
     }
 
+    //UPLOAD PROFILE PIC IN DB
     public Employee uploadProfilePicture(UUID id, MultipartFile file) throws IOException{
         Employee found = this.findById(id);
         String profilePicURL = (String) cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
