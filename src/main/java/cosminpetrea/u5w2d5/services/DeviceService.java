@@ -7,6 +7,7 @@ import cosminpetrea.u5w2d5.enums.DeviceStatus;
 import cosminpetrea.u5w2d5.exceptions.NotFoundException;
 import cosminpetrea.u5w2d5.payloads.NewDeviceDTO;
 import cosminpetrea.u5w2d5.repositories.DeviceDAO;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -50,16 +51,16 @@ public class DeviceService {
         return deviceDAO.findAll(pageable);
     }
 
+    public Device findByIdAndUpdate(UUID id, NewDeviceDTO device) {
+        Device found = this.findById(id);
+        found.setType(device.type());
+        return deviceDAO.save(found);
+    }
 
-    private void findByIdAndDelete(UUID id) {
+    public void findByIdAndDelete(UUID id) {
         Device found = this.findById(id);
         deviceDAO.delete(found);
     }
 
-    private Device findByIdAndUpdate(UUID id, Device device) {
-        Device found = this.findById(id);
-        found.setType(device.getType());
-        return deviceDAO.save(found);
-    }
 
 }
