@@ -5,6 +5,7 @@ import cosminpetrea.u5w2d5.entities.Device;
 import cosminpetrea.u5w2d5.entities.Employee;
 import cosminpetrea.u5w2d5.enums.DeviceStatus;
 import cosminpetrea.u5w2d5.exceptions.NotFoundException;
+import cosminpetrea.u5w2d5.payloads.AssignDeviceToEmloyeeDTO;
 import cosminpetrea.u5w2d5.payloads.NewDeviceDTO;
 import cosminpetrea.u5w2d5.repositories.DeviceDAO;
 import jakarta.validation.constraints.NotNull;
@@ -38,8 +39,8 @@ public class DeviceService {
         return deviceDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
-    public Device deviceSetEmployee(UUID id, UUID employeeID){
-        Employee employee = employeeService.findById(employeeID);
+    public Device deviceSetEmployee(UUID id, AssignDeviceToEmloyeeDTO employeeId){
+        Employee employee = employeeService.findById(employeeId.id());
         Device found = this.findById(id);
         found.setEmployee(employee);
         found.setDeviceStatus(DeviceStatus.ASSIGNED);

@@ -3,6 +3,7 @@ package cosminpetrea.u5w2d5.controllers;
 
 import cosminpetrea.u5w2d5.entities.Device;
 import cosminpetrea.u5w2d5.exceptions.BadRequestException;
+import cosminpetrea.u5w2d5.payloads.AssignDeviceToEmloyeeDTO;
 import cosminpetrea.u5w2d5.payloads.NewDeviceDTO;
 import cosminpetrea.u5w2d5.services.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +53,14 @@ public class DeviceController {
         deviceService.findByIdAndDelete(id);
     }
 
-    @PatchMapping("/{device_id}/assignDevice")
-    public Device assignDevice(@RequestBody UUID employeeId, @PathVariable UUID deviceId) {
-        return deviceService.deviceSetEmployee(employeeId, deviceId);
+    @PatchMapping("/{id}/assignDevice")
+    @ResponseStatus(HttpStatus.OK)
+    public Device assignDevice(@PathVariable UUID deviceId, @RequestBody AssignDeviceToEmloyeeDTO employeeId,  BindingResult validation) {
+       if (validation.hasErrors()){
+           throw new BadRequestException(validation.getAllErrors());
+       }
+
+        return deviceService.deviceSetEmployee(deviceId,employeeId);
 
     }
 
