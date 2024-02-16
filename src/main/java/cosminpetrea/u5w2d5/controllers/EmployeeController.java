@@ -3,7 +3,6 @@ package cosminpetrea.u5w2d5.controllers;
 import cosminpetrea.u5w2d5.entities.Employee;
 import cosminpetrea.u5w2d5.exceptions.BadRequestException;
 import cosminpetrea.u5w2d5.payloads.NewEmployeeDTO;
-import cosminpetrea.u5w2d5.payloads.NewEmployeeResponseDTO;
 import cosminpetrea.u5w2d5.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
