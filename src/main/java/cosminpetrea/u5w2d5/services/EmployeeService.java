@@ -22,6 +22,54 @@ import java.util.UUID;
 
 @Service
 public class EmployeeService {
+    @Autowired
+    private Cloudinary cloudinary;
+
+    @Autowired
+    private EmployeeDAO employeeDAO;
+
+    public Employee save(NewEmployeeDTO payload) throws IOException{
+        employeeDAO.findByEmail(payload.email()).ifPresent(employee -> {
+            throw new BadRequestException("Email '" + payload.email() + "' is already in use");
+        });
+        Employee newEmployee = new Employee();
+        newEmployee.setUsername(payload.username());
+        newEmployee.setName(payload.name());
+        newEmployee.setSurname(payload.surname());
+        newEmployee.setEmail(payload.email());
+        return employeeDAO.save(newEmployee);
+    }
+
+    public Page<Employee> getEmployees(int page, int size, String sort){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return employeeDAO.findAll(pageable);
+    }
+
+    public Employee findById(UUID id) {
+        return employeeDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
+    }
+
+    public Employee findByIdAndUpdate(UUID id, NewEmployeeDTO payload){
+        Employee found = this.findById(id);
+
+        found.setUsername(payload.username());
+        found.setName(payload.name());
+        found.setSurname(payload.surname());
+        found.setEmail(payload.email());
+        return employeeDAO.save(found);
+    }
+
+    public void FindByIDAndDelete(UUID id){
+        Employee found = this.findById(id);
+        employeeDAO.delete(found);
+    }
+
+    public Employee uploadProfilePicture(UUID id, MultipartFile file) throws IOException{
+        Employee found = this.findById(id);
+        String profilePicURL = (String) cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
+        found.setProfileImg(profilePicURL);
+        return employeeDAO.save(found);
+    }
 
 
 
