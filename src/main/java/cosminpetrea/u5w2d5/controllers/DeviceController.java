@@ -52,5 +52,10 @@ public class DeviceController {
         deviceService.findByIdAndDelete(id);
     }
 
+    @PatchMapping("/{device_id}/assignDevice")
+    public Device assignDevice(@RequestBody UUID employeeId, @PathVariable UUID deviceId) {
+        return deviceService.deviceSetEmployee(employeeId, deviceId);
+
+    }
 
 }
